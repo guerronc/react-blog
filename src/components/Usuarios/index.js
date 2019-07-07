@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import { connect } from "react-redux";
 
 class Usuarios extends Component {
-  constructor() {
+  /* constructor() {
     super();
     this.state = {
       usuarios: []
@@ -16,10 +17,10 @@ class Usuarios extends Component {
     this.setState({
       usuarios: respuesta.data
     });
-  }
+  } */
 
   ponerFilas = () =>
-    this.state.usuarios.map(usuario => (
+    this.props.usuarios.map(usuario => (
       <tr key={usuario.id}>
         <td>{usuario.name}</td>
         <td>{usuario.email}</td>
@@ -28,7 +29,6 @@ class Usuarios extends Component {
     ));
 
   render() {
-    console.log(this.state.usuarios);
     return (
       <div>
         <table className="tabla">
@@ -46,4 +46,11 @@ class Usuarios extends Component {
   }
 }
 
-export default Usuarios;
+const mapStateToProps = reducers => {
+  return reducers.usuariosReducers;
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Usuarios);
