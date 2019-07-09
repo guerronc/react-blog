@@ -7,7 +7,7 @@ export const traerTodos = () => async dispatch => {
   });
   try {
     const respuesta = await Axios.get(
-      "https://jsonplaceholder.typicode.com/users"
+      "https://jsonplaceholder.typicode.com/userss"
     );
 
     dispatch({
