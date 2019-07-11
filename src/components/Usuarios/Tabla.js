@@ -34,7 +34,7 @@ const Tabla = props => {
 };
 
 const mapStateToPromps = reducers => {
-  return reducers.usuariosReducers;
+  return reducers.usuariosReducer;
 };
 
 export default connect(mapStateToPromps)(Tabla);

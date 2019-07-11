@@ -32,7 +32,7 @@ class Usuarios extends Component {
 }
 
 const mapStateToProps = reducers => {
-  return reducers.usuariosReducers;
+  return reducers.usuariosReducer;
 };
 
 export default connect(
