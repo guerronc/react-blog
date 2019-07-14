@@ -2,7 +2,9 @@ import Axios from "axios";
 import {
   ACTUALIZAR,
   CARGANDO,
-  ERROR
+  ERROR,
+  COM_CARGANDO,
+  COM_ERROR
 } from "../types/publicacionesTypes";
 
 import * as usuariosTypes from "../types/usuariosTypes";
@@ -95,6 +97,11 @@ export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
 };
 
 export const traerComentarios = (pub_key, com_key) => async (dispatch,getState) =>{
+
+  dispatch({
+    type: COM_CARGANDO
+  });
+
   try {
     const { publicaciones } = getState().publicacionesReducer;
     const seleccionada = publicaciones[pub_key][com_key];
@@ -114,9 +121,15 @@ export const traerComentarios = (pub_key, com_key) => async (dispatch,getState) 
       type: ACTUALIZAR,
       payload: publicaciones_actualizadas
     });
-    
+
 
   } catch (error) {
-    console.log(error);
+    console.log("Error: ", error.message);
+    dispatch({
+      type: COM_ERROR,
+      payload: `Informacion de comentarios no disponible. Detalle error: ${
+        error.message
+      }`
+    });
   }
 }

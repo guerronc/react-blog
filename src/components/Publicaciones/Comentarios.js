@@ -1,17 +1,34 @@
 //Componente funcional o state less
 
 import React from "react";
+import Spinner from "../General/Spinner";
+import Fatal from "../General/Fatal";
+import { connect } from "react-redux";
 
 const Comentarios = props => {
-  return (
-    <ul>
-      <li>Hola</li>
+  console.log("estos son los promps de componentes: ", props);
 
-      <li>Hola</li>
+  if (props.cargando) {
+    return <Spinner />;
+  }
 
-      <li>Hola</li>
-    </ul>
-  );
+  if (props.error) {
+    return <Fatal mensaje={props.error} />;
+  }
+  const ponerComentarios = () =>
+    props.comentarios.map(comentario => (
+      <li key={comentario.id}>
+        <b>
+          <u>{comentario.email}</u>
+        </b>
+        <br />
+        {comentario.body}
+      </li>
+    ));
+
+  return <ul>{ponerComentarios()}</ul>;
 };
 
-export default Comentarios;
+const mapStateToProps = ({ publicacionesReducer }) => publicacionesReducer;
+
+export default connect(mapStateToProps)(Comentarios);

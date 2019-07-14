@@ -117,7 +117,7 @@ class Publicaciones extends Component {
         <h2>{publicacion.title}</h2>
         <h3>{publicacion.body}</h3>
         {
-          (publicacion.abierto) ? <Comentarios></Comentarios> : ''
+          (publicacion.abierto) ? <Comentarios comentarios={publicacion.comentarios}></Comentarios> : ''
         }
       </div>
     ));
