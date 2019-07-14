@@ -5,9 +5,21 @@ import * as publicacionesActions from "../../actions/publicacionesActions";
 import Spinner from "../General/Spinner";
 import Fatal from "../General/Fatal";
 
+/**
+ * Contante para traer todas las acciones del recuder de usuarios
+ */
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerPorUsuario: publicacionesTraerPorUsuario } = publicacionesActions;
+/**
+ * Constante para traer las acciones del reducer de publicaciones
+ */
+const {
+  traerPorUsuario: publicacionesTraerPorUsuario,
+  abrirCerrar
+} = publicacionesActions;
 
+/**
+ * Clase componente react para las publicaciones
+ */
 class Publicaciones extends Component {
   async componentDidMount() {
     const {
@@ -87,13 +99,23 @@ class Publicaciones extends Component {
 
     const { publicaciones_key } = usuarios[key];
 
-    return publicaciones[publicaciones_key].map(publicacion => (
-      <div className='pub_titulo' key={publicacion.id} onClick={()=>alert(publicacion.id)}>
+    return this.mostrarInfo(
+      publicaciones[publicaciones_key],
+      publicaciones_key
+    );
+  };
+
+  mostrarInfo = (publicaciones, pub_key) =>
+    publicaciones.map((publicacion, com_key) => (
+      <div
+        className="pub_titulo"
+        key={publicacion.id}
+        onClick={() => this.props.abrirCerrar(pub_key,com_key)}
+      >
         <h2>{publicacion.title}</h2>
         <h3>{publicacion.body}</h3>
       </div>
     ));
-  };
 
   render() {
     console.log(this.props);
@@ -108,6 +130,11 @@ class Publicaciones extends Component {
   }
 }
 
+/**
+ * Contante para obtener todos los reducers que se pasan al componente
+ * @param {object} usuariosReducer Reducer del usuario
+ * @param {object} publicacionesReducer Reducer de las publicaciones
+ */
 const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
   return {
     usuariosReducer,
@@ -115,11 +142,18 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
   };
 };
 
+/**
+ * Constante para obtener todas las acciones de los reducers
+ */
 const mapDispatchToProps = {
   usuariosTraerTodos,
-  publicacionesTraerPorUsuario
+  publicacionesTraerPorUsuario,
+  abrirCerrar
 };
 
+/**
+ * Conecta al componente con los reducers y las acciones
+ */
 export default connect(
   mapStateToProps,
   mapDispatchToProps

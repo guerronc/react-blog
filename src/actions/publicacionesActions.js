@@ -7,8 +7,15 @@ import {
 
 import * as usuariosTypes from "../types/usuariosTypes";
 
+/**
+ * Contante para traer los tipos(enumeradores) utilizados por usuarios
+ */
 const { TRAER_TODOS: USUARIOS_TRAER_TODOS } = usuariosTypes;
 
+/**
+ * Traer las publicaciones de un usuario especifico
+ * @param {number} key Key del usuario para buscar las publicaciones 
+ */
 export const traerPorUsuario = key => async (dispatch, getState) => {
   dispatch({
     type: CARGANDO
@@ -22,7 +29,13 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
       `https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`
     );
 
-    const publicaciones_actualizadas = [...publicaciones, respuesta.data];
+    const nuevas = respuesta.data.map(publicacion => ({
+      ...publicacion,
+      comentarios: [],
+      abierto: false
+    }));
+
+    const publicaciones_actualizadas = [...publicaciones, nuevas];
 
     const publicaciones_key = publicaciones_actualizadas.length - 1;
 
@@ -46,7 +59,22 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
     console.log("Error: ", error.message);
     dispatch({
       type: ERROR,
-      payload: `Informacion de publicaciones no disponible. Detalle error: ${error.message}`
+      payload: `Informacion de publicaciones no disponible. Detalle error: ${
+        error.message
+      }`
     });
   }
 };
+
+/**
+ * Buscar los comentarios de las publicaciones seleccionadas
+ * @param {number} pub_key Key del usuario 
+ * @param {number} com_key Key de la publicacion seleccionada
+ */
+export const abrirCerrar = (pub_key,com_key) => (dispatch) =>{
+  try {
+    console.log(pub_key,com_key);
+  } catch (error) {
+    console.log(error);
+  }
+}
