@@ -8,13 +8,15 @@ import { connect } from "react-redux";
 const Comentarios = props => {
   console.log("estos son los promps de componentes: ", props);
 
-  if (props.cargando) {
+  
+  if (props.com_error) {
+    return <Fatal mensaje={props.com_error} />;
+  }
+  if (props.com_cargando && !props.comentarios.length) {
     return <Spinner />;
   }
 
-  if (props.error) {
-    return <Fatal mensaje={props.error} />;
-  }
+  
   const ponerComentarios = () =>
     props.comentarios.map(comentario => (
       <li key={comentario.id}>
