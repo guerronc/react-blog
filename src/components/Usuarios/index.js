@@ -7,7 +7,7 @@ import Tabla from "./Tabla";
 
 class Usuarios extends Component {
   componentDidMount() {
-    this.props.traerTodos();
+    if (!this.props.usuarios.length) this.props.traerTodos();
   }
 
   /**
@@ -21,7 +21,7 @@ class Usuarios extends Component {
       return <Fatal mensaje={this.props.error} />;
     }
 
-    return <Tabla/>;
+    return <Tabla />;
   };
 
   render() {
