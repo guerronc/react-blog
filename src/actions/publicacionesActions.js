@@ -28,6 +28,11 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
 
     const usuarios_actualizados = [...usuarios];
 
+    dispatch({
+      type: TRAER_POR_USUARIO,
+      payload: publicaciones_actualizadas
+    });
+
     usuarios_actualizados[key] = {
       ...usuarios[key],
       publicaciones_key
@@ -37,17 +42,11 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
       type: USUARIOS_TRAER_TODOS,
       payload: usuarios_actualizados
     });
-
-    dispatch({
-      type: TRAER_POR_USUARIO,
-      payload: publicaciones_actualizadas
-    });
-    
   } catch (error) {
     console.log("Error: ", error.message);
     dispatch({
       type: ERROR,
-      payload: error.message
+      payload: `Informacion de publicaciones no disponible. Detalle error: ${error.message}`
     });
   }
 };
