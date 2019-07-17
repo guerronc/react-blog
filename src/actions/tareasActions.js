@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { TRAER_TODAS, CARGANDO, ERROR } from "../types/tareasTypes";
+import { TRAER_TODAS, CARGANDO, ERROR, CAMBIO_USUARIO,CAMBIO_TITULO } from "../types/tareasTypes";
 
 export const traerTodas = () => async dispatch => {
   dispatch({
@@ -34,3 +34,30 @@ export const traerTodas = () => async dispatch => {
     });
   }
 };
+
+export const cambioUsuarioId = (usarioId) => (dispatch) =>{
+  try {
+
+    dispatch({
+      type: CAMBIO_USUARIO,
+      payload: usarioId
+    })
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+export const cambioTitulo = (titulo) => (dispatch) =>{
+  try {
+
+    dispatch({
+      type: CAMBIO_TITULO,
+      payload: titulo
+    })
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
