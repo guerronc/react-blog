@@ -8,7 +8,9 @@ import Fatal from "../General/Fatal";
 
 class Tareas extends Component {
   componentDidMount() {
-    this.props.traerTodas();
+    if (!Object.keys(this.props.tareas).length) {
+      this.props.traerTodas();
+    }
   }
 
   mostrarContenido = () => {
@@ -31,7 +33,7 @@ class Tareas extends Component {
   };
 
   ponerTareas = user_id => {
-    const { tareas } = this.props;
+    const { tareas, cambioCheck } = this.props;
     const por_usuario = {
       ...tareas[user_id]
     };
@@ -41,18 +43,28 @@ class Tareas extends Component {
         <input
           type="checkbox"
           defaultChecked={por_usuario[tarea_id].completed}
+          onChange={()=> cambioCheck(user_id, tarea_id)}
         />
         {por_usuario[tarea_id].title}
+        <button className='m_left'>
+          <Link to={`/tareas/guardar/${user_id}/${tarea_id}`}>
+          Editar
+          </Link></button>
+        <button className='m_left'>Eliminar</button>
       </div>
     ));
   };
 
   render() {
     console.log(this.props);
-    return <div>
-    <button><Link to='/tareas/guardar'>Agregar</Link></button>
-    {this.mostrarContenido()}
-    </div>;
+    return (
+      <div>
+        <button>
+          <Link to="/tareas/guardar">Agregar</Link>
+        </button>
+        {this.mostrarContenido()}
+      </div>
+    );
   }
 }
 

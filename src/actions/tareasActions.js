@@ -5,7 +5,8 @@ import {
   ERROR,
   CAMBIO_USUARIO,
   CAMBIO_TITULO,
-  AGREGAR_TAREA
+  AGREGAR_TAREA,
+  ACTUALIZAR_TAREA
 } from "../types/tareasTypes";
 
 export const traerTodas = () => async dispatch => {
@@ -86,12 +87,70 @@ export const agregar = nuevaTarea => async dispatch => {
     console.log(respuesta);
     dispatch({
       type: AGREGAR_TAREA
-    })
+    });
   } catch (error) {
     console.log(error);
     dispatch({
       type: ERROR,
       payload: `Error al guardar la nueva tarea. Detalle error: ${
+        error.message
+      }`
+    });
+  }
+};
+
+export const editar = tarea_editada => async dispatch => {
+  dispatch({
+    type: CARGANDO
+  });
+  try {
+    const respuesta = await Axios.put(
+      `https://jsonplaceholder.typicode.com/todos/${tarea_editada.id}`,
+      tarea_editada
+    );
+    console.log(respuesta);
+    dispatch({
+      type: AGREGAR_TAREA
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload: `Error al editar la tarea. Detalle error: ${error.message}`
+    });
+  }
+};
+
+export const cambioCheck = (usu_id, tar_id) => (dispatch, getState) => {
+  try {
+    const { tareas } = getState().tareasReducer;
+
+    const seleccionada = tareas[usu_id][tar_id];
+
+    const actualizadas = {
+      ...tareas
+    };
+
+    actualizadas[usu_id] = {
+      ...tareas[usu_id]
+    };
+
+    actualizadas[usu_id][tar_id] = {
+      ...tareas[usu_id][tar_id],
+      completed: !seleccionada.completed
+    };
+
+    dispatch({
+      type: ACTUALIZAR_TAREA,
+      payload: actualizadas
+    })
+
+
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload: `Error al cambiar check de la tarea. Detalle error: ${
         error.message
       }`
     });
