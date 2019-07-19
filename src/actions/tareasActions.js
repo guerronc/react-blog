@@ -6,7 +6,8 @@ import {
   CAMBIO_USUARIO,
   CAMBIO_TITULO,
   AGREGAR_TAREA,
-  ACTUALIZAR_TAREA
+  ACTUALIZAR_TAREA,
+  LIMPIAR_TAREA
 } from "../types/tareasTypes";
 
 export const traerTodas = () => async dispatch => {
@@ -80,11 +81,7 @@ export const agregar = nuevaTarea => async dispatch => {
     type: CARGANDO
   });
   try {
-    const respuesta = await Axios.post(
-      "https://jsonplaceholder.typicode.com/todos",
-      nuevaTarea
-    );
-    console.log(respuesta);
+    await Axios.post("https://jsonplaceholder.typicode.com/todos", nuevaTarea);
     dispatch({
       type: AGREGAR_TAREA
     });
@@ -104,11 +101,10 @@ export const editar = tarea_editada => async dispatch => {
     type: CARGANDO
   });
   try {
-    const respuesta = await Axios.put(
+    await Axios.put(
       `https://jsonplaceholder.typicode.com/todos/${tarea_editada.id}`,
       tarea_editada
     );
-    console.log(respuesta);
     dispatch({
       type: AGREGAR_TAREA
     });
@@ -143,9 +139,7 @@ export const cambioCheck = (usu_id, tar_id) => (dispatch, getState) => {
     dispatch({
       type: ACTUALIZAR_TAREA,
       payload: actualizadas
-    })
-
-
+    });
   } catch (error) {
     console.log(error);
     dispatch({
@@ -156,3 +150,40 @@ export const cambioCheck = (usu_id, tar_id) => (dispatch, getState) => {
     });
   }
 };
+
+export const eliminar = tar_id => async dispatch => {
+  dispatch({
+    type: CARGANDO
+  });
+  try {
+    await Axios.delete(`https://jsonplaceholder.typicode.com/todos/${tar_id}`);
+
+    dispatch({
+      type: TRAER_TODAS,
+      payload: {}
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload: `Error al eliminar la tarea. Detalle error: ${error.message}`
+    });
+  }
+};
+
+
+export const limpiarForma = () => (dispatch, getState) =>{
+  try {
+
+    dispatch({
+      type: LIMPIAR_TAREA
+    });
+    
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload: `Error al limpiar la forma. Detalle error: ${error.message}`
+    });
+  }
+}

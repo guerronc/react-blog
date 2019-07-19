@@ -13,6 +13,14 @@ class Tareas extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { cargando, tareas, traerTodas } = this.props;
+    if (!Object.keys(tareas).length && !cargando) {
+      traerTodas();
+      console.log(this.props);
+    }
+  }
+
   mostrarContenido = () => {
     const { tareas, cargando, error } = this.props;
 
@@ -23,7 +31,6 @@ class Tareas extends Component {
     if (cargando) {
       return <Spinner />;
     }
-
     return Object.keys(tareas).map(user_id => (
       <div key={user_id}>
         <h2>Usuario {user_id}</h2>
@@ -33,7 +40,7 @@ class Tareas extends Component {
   };
 
   ponerTareas = user_id => {
-    const { tareas, cambioCheck } = this.props;
+    const { tareas, cambioCheck, eliminar } = this.props;
     const por_usuario = {
       ...tareas[user_id]
     };
@@ -43,20 +50,20 @@ class Tareas extends Component {
         <input
           type="checkbox"
           defaultChecked={por_usuario[tarea_id].completed}
-          onChange={()=> cambioCheck(user_id, tarea_id)}
+          onChange={() => cambioCheck(user_id, tarea_id)}
         />
         {por_usuario[tarea_id].title}
-        <button className='m_left'>
-          <Link to={`/tareas/guardar/${user_id}/${tarea_id}`}>
-          Editar
-          </Link></button>
-        <button className='m_left'>Eliminar</button>
+        <button className="m_left">
+          <Link to={`/tareas/guardar/${user_id}/${tarea_id}`}>Editar</Link>
+        </button>
+        <button className="m_left" onClick={() => eliminar(tarea_id)}>
+          Eliminar
+        </button>
       </div>
     ));
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <button>

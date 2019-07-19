@@ -7,20 +7,23 @@ import { Redirect } from "react-router-dom";
 
 class Guardar extends Component {
   componentDidMount() {
-    console.log("Aqui va component did mount", this.props);
     const {
       match: {
         params: { usu_id, tar_id }
       },
       tareas,
       cambioUsuarioId,
-      cambioTitulo
+      cambioTitulo,
+      limpiarForma
     } = this.props;
 
     if (usu_id && tar_id) {
       const tarea = tareas[usu_id][tar_id];
       cambioUsuarioId(tarea.userId);
       cambioTitulo(tarea.title);
+    }
+    else{
+      limpiarForma();
     }
   }
 
